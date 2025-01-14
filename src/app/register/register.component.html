@@ -1,0 +1,16 @@
+<form [formGroup]="form" class="container row" (ngSubmit)="submit()">
+  <h2>Register new user</h2>
+  <mat-form-field class="col-md-12">
+    <mat-label>Username</mat-label>
+    <input formControlName="username" matInput type="text" />
+  </mat-form-field>
+  <mat-form-field class="col-md-12">
+    <mat-label>Password</mat-label>
+    <input formControlName="password" matInput type="password" />
+  </mat-form-field>
+  <mat-form-field class="col-md-12">
+    <mat-label>Repeat password</mat-label>
+    <input formControlName="passwordRepeat" matInput type="password" />
+  </mat-form-field>
+  <button style="display: none" type="submit"></button>
+</form>

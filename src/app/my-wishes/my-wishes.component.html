@@ -1,0 +1,27 @@
+<h2>My Wishes</h2>
+@for (wish of wishes; track $index) {
+  <mat-card appearance="outlined" class="mb-1">
+    <mat-card-header>
+      <mat-card-title>{{ wish.content }}</mat-card-title>
+      <mat-card-content>{{ wish.status }}</mat-card-content>
+    </mat-card-header>
+    <!--
+    <mat-card-actions>
+      <button mat-button>Learn More</button>
+    </mat-card-actions>
+    -->
+  </mat-card>
+} @empty {
+  <p>No wishes found, try to formulate a wish!</p>
+}
+<form [formGroup]="form" (ngSubmit)="createWish()">
+  <mat-form-field class="col-md-12">
+    <mat-label>New wish</mat-label>
+    <input
+      formControlName="wish"
+      matInput
+      type="text"
+      placeholder="Computer Science Book"
+    />
+  </mat-form-field>
+</form>
