@@ -5,17 +5,20 @@
       <mat-card-title>{{ wish.content }}</mat-card-title>
       <mat-card-content>{{ wish.status }}</mat-card-content>
     </mat-card-header>
-    <!--
     <mat-card-actions>
-      <button mat-button>Learn More</button>
+      <button mat-button (click)="deleteWish(wish.id)">Delete</button>
+      @if (getRoles().includes("Admin") && wish.status !== "Delivered") {
+        <button mat-button (click)="progressWishStatus(wish.id)">
+          Update status
+        </button>
+      }
     </mat-card-actions>
-    -->
   </mat-card>
 } @empty {
   <p>No wishes found, try to formulate a wish!</p>
 }
 <form [formGroup]="form" (ngSubmit)="createWish()">
-  <mat-form-field class="col-md-12">
+  <mat-form-field class="col-md-12" color="accent">
     <mat-label>New wish</mat-label>
     <input
       formControlName="wish"

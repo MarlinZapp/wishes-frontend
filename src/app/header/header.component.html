@@ -1,0 +1,14 @@
+<div id="header">
+  <div id="left">
+    <mat-icon
+      svgIcon="present"
+      aria-hidden="false"
+      aria-label="Home"
+    ></mat-icon>
+  </div>
+  <div id="right">
+    <span>{{ username() }}</span>
+    <mat-divider vertical inset></mat-divider>
+    <button mat-button (click)="logout()">Log out</button>
+  </div>
+</div>

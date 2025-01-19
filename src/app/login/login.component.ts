@@ -7,8 +7,8 @@ import {
 } from "@angular/forms";
 import { LoginForm } from "../interfaces/login";
 import { MatFormField, MatInput, MatLabel } from "@angular/material/input";
-import { Router, RouterModule } from "@angular/router";
-import { HttpService } from "../services/http.service";
+import { ActivatedRoute, Router, RouterModule } from "@angular/router";
+import { AuthService } from "../services/auth.service";
 
 @Component({
   selector: "app-login",
@@ -34,15 +34,23 @@ export class LoginComponent {
       validators: [Validators.required],
     }),
   });
+  title = "Login";
 
   constructor(
-    private httpService: HttpService,
+    private authService: AuthService,
     private router: Router,
-  ) {}
+    private activatedRoute: ActivatedRoute,
+  ) {
+    activatedRoute.queryParams.subscribe((params) => {
+      if (params["reason"] === "sessionExpired") {
+        this.title = "Session expired: Login again";
+      }
+    });
+  }
 
   submit() {
     if (this.form.valid) {
-      this.httpService
+      this.authService
         .login(
           this.form.controls.username.value,
           this.form.controls.password.value,

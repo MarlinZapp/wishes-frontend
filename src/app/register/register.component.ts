@@ -6,23 +6,29 @@ import {
   Validators,
 } from "@angular/forms";
 import { RegisterForm } from "../interfaces/login";
-import { MatFormField, MatInput, MatLabel } from "@angular/material/input";
+import {
+  MatError,
+  MatFormField,
+  MatInput,
+  MatLabel,
+} from "@angular/material/input";
 import { matchValueValidator } from "../validators";
-import { HttpService } from "../services/http.service";
 import { Router } from "@angular/router";
+import { AuthService } from "../services/auth.service";
 
 @Component({
   selector: "app-login",
   standalone: true,
-  imports: [ReactiveFormsModule, MatInput, MatFormField, MatLabel],
+  imports: [ReactiveFormsModule, MatInput, MatFormField, MatLabel, MatError],
   templateUrl: "./register.component.html",
   styleUrl: "./register.component.scss",
 })
 export class RegisterComponent {
   form: FormGroup<RegisterForm>;
+  error: string | null = null;
 
   constructor(
-    private httpService: HttpService,
+    private authService: AuthService,
     private router: Router,
   ) {
     this.form = new FormGroup<RegisterForm>({
@@ -46,11 +52,15 @@ export class RegisterComponent {
 
   submit() {
     if (this.form.valid) {
-      this.httpService.register(
-        this.form.controls.username.value,
-        this.form.controls.password.value,
-      );
-      this.router.navigate(["/my_wishes"]);
+      this.authService
+        .register(
+          this.form.controls.username.value,
+          this.form.controls.password.value,
+        )
+        .then(() => {
+          this.router.navigate(["/my_wishes"]);
+        })
+        .catch((err) => (this.error = "Registration failed"));
     }
   }
 }

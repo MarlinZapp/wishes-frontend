@@ -1,55 +1,14 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Wish } from "../interfaces/wish";
+import { firstValueFrom } from "rxjs";
+import { RecordId } from "../interfaces/response";
 
 @Injectable({
   providedIn: "root",
 })
-export class HttpService {
+export class WishService {
   constructor(private httpClient: HttpClient) {}
-
-  register(username: string, password: string) {
-    return new Promise<void>((resolve, reject) => {
-      this.httpClient
-        .post<string>(
-          "/api/register",
-          { name: username, pass: password },
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          },
-        )
-        .subscribe({
-          next: (jwt) => {
-            localStorage.setItem("jwt", jwt);
-          },
-          error: reject,
-        });
-    });
-  }
-
-  login(username: string, password: string) {
-    return new Promise<void>((resolve, reject) => {
-      this.httpClient
-        .post<string>(
-          "/api/login",
-          { name: username, pass: password },
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          },
-        )
-        .subscribe({
-          next: (jwt) => {
-            localStorage.setItem("jwt", jwt);
-            resolve();
-          },
-          error: reject,
-        });
-    });
-  }
 
   getWishes() {
     return new Promise<Wish[]>((resolve, reject) => {
@@ -85,10 +44,10 @@ export class HttpService {
     });
   }
 
-  getWish(id: string) {
+  getWish(id: RecordId) {
     return new Promise<Wish>((resolve, reject) => {
       this.httpClient
-        .get<Wish>("/api/wish", {
+        .get<Wish>("/api/wish/" + id.id.String, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("jwt")}`,
           },
@@ -98,5 +57,30 @@ export class HttpService {
           error: reject,
         });
     });
+  }
+
+  deleteWish(id: RecordId) {
+    console.log("Delete with id", id);
+    return firstValueFrom(
+      this.httpClient.delete<Wish>("/api/wish/" + id.id.String, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+        },
+      }),
+    );
+  }
+
+  progressWishStatus(id: RecordId) {
+    return firstValueFrom(
+      this.httpClient.patch<Wish | undefined>(
+        "/api/wish/" + id.id.String + "/status/progress",
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+          },
+        },
+      ),
+    );
   }
 }

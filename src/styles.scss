@@ -1,5 +1,6 @@
 /* Importing Bootstrap SCSS file. */
 @use "bootstrap/scss/bootstrap";
+@use "@angular/material" as mat;
 
 /* You can add global styles to this file, and also import other style files */
 
@@ -10,4 +11,9 @@ body {
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+app-root {
+  display: block;
+  width: 100%;
 }

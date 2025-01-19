@@ -1,0 +1,32 @@
+#header {
+  height: 50px;
+  display: flex;
+}
+
+#left {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 50%;
+  margin-left: 10px;
+}
+#right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: 50%;
+  margin-right: 10px;
+}
+
+mat-divider {
+  height: 25px;
+}
+
+mat-icon {
+  height: 50px;
+  width: 50px;
+}
+
+button {
+  height: 50px;
+}

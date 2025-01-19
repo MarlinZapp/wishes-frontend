@@ -1,1 +1,6 @@
-<router-outlet />
+@if (loggedInUser() !== null) {
+  <app-header></app-header>
+}
+<div class="container">
+  <router-outlet />
+</div>
