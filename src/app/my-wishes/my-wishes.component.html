@@ -1,10 +1,24 @@
-<h2>My Wishes</h2>
+<h2>
+  @if (getRoles().includes("Admin")) {
+    All Wishes
+  } @else {
+    My Wishes
+  }
+</h2>
 @for (wish of wishes; track $index) {
   <mat-card appearance="outlined" class="mb-1">
     <mat-card-header>
       <mat-card-title>{{ wish.content }}</mat-card-title>
-      <mat-card-content>{{ wish.status }}</mat-card-content>
     </mat-card-header>
+    <mat-card-content class="row">
+      <div class="col-md-12">
+        Status:
+        {{ wish.status }}
+      </div>
+      @if (wish.username) {
+        <div class="col-md-12">By: {{ wish.username }}</div>
+      }
+    </mat-card-content>
     <mat-card-actions>
       <button mat-button (click)="deleteWish(wish.id)">Delete</button>
       @if (getRoles().includes("Admin") && wish.status !== "Delivered") {
@@ -17,14 +31,16 @@
 } @empty {
   <p>No wishes found, try to formulate a wish!</p>
 }
-<form [formGroup]="form" (ngSubmit)="createWish()">
-  <mat-form-field class="col-md-12" color="accent">
-    <mat-label>New wish</mat-label>
-    <input
-      formControlName="wish"
-      matInput
-      type="text"
-      placeholder="Computer Science Book"
-    />
-  </mat-form-field>
-</form>
+@if (getRoles().includes("Default")) {
+  <form [formGroup]="form" (ngSubmit)="createWish()">
+    <mat-form-field class="col-md-12" color="accent">
+      <mat-label>New wish</mat-label>
+      <input
+        formControlName="wish"
+        matInput
+        type="text"
+        placeholder="Computer Science Book"
+      />
+    </mat-form-field>
+  </form>
+}

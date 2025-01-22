@@ -10,10 +10,10 @@ import { RecordId } from "../interfaces/response";
 export class WishService {
   constructor(private httpClient: HttpClient) {}
 
-  getWishes() {
+  getWishes(withUsernames = false) {
     return new Promise<Wish[]>((resolve, reject) => {
       this.httpClient
-        .get<Wish[]>("/api/wishes", {
+        .get<Wish[]>("/api/wishes?with_username=" + withUsernames, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("jwt")}`,
           },

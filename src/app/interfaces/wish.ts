@@ -9,6 +9,7 @@ export interface Wish {
   content: string;
   status: WishStatus;
   id: RecordId;
+  username?: string;
 }
 
 export type WishStatus =

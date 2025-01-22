@@ -53,9 +53,11 @@ export class MyWishesComponent {
     private authService: AuthService,
     private router: Router,
   ) {
-    this.wishService.getWishes().then((wishes) => {
-      this.wishes = wishes;
-    });
+    this.wishService
+      .getWishes(this.getRoles().includes("Admin"))
+      .then((wishes) => {
+        this.wishes = wishes;
+      });
   }
 
   createWish() {

@@ -43,12 +43,12 @@ export class AuthService {
   }
 
   /** Navigates to login page if not authenticated. */
-  checkNeedAuthentication() {
+  async checkNeedAuthentication() {
     const oldJwt = localStorage.getItem("jwt");
     // try to use the old jwt on a route that requires authentication
     // if it fails, navigate to login page
     if (oldJwt) {
-      this.checkAuth()
+      await this.checkAuth()
         .then((answer) => {
           const oldName = localStorage.getItem("name");
           this.router.navigate(["/my_wishes"]);
