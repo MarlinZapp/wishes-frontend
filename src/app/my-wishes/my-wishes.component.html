@@ -5,31 +5,35 @@
     My Wishes
   }
 </h2>
-@for (wish of wishes; track $index) {
-  <mat-card appearance="outlined" class="mb-1">
-    <mat-card-header>
-      <mat-card-title>{{ wish.content }}</mat-card-title>
-    </mat-card-header>
-    <mat-card-content class="row">
-      <div class="col-md-12">
-        Status:
-        {{ wish.status }}
-      </div>
-      @if (wish.username) {
-        <div class="col-md-12">By: {{ wish.username }}</div>
-      }
-    </mat-card-content>
-    <mat-card-actions>
-      <button mat-button (click)="deleteWish(wish.id)">Delete</button>
-      @if (getRoles().includes("Admin") && wish.status !== "Delivered") {
-        <button mat-button (click)="progressWishStatus(wish.id)">
-          Update status
-        </button>
-      }
-    </mat-card-actions>
-  </mat-card>
-} @empty {
-  <p>No wishes found, try to formulate a wish!</p>
+@if (waitingForWishes) {
+  <mat-spinner></mat-spinner>
+} @else {
+  @for (wish of wishes; track $index) {
+    <mat-card appearance="outlined" class="mb-1">
+      <mat-card-header>
+        <mat-card-title>{{ wish.content }}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content class="row">
+        <div class="col-md-12">
+          Status:
+          {{ wish.status }}
+        </div>
+        @if (wish.username) {
+          <div class="col-md-12">By: {{ wish.username }}</div>
+        }
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-button (click)="deleteWish(wish.id)">Delete</button>
+        @if (getRoles().includes("Admin") && wish.status !== "Delivered") {
+          <button mat-button (click)="progressWishStatus(wish.id)">
+            Update status
+          </button>
+        }
+      </mat-card-actions>
+    </mat-card>
+  } @empty {
+    <p>No wishes found, try to formulate a wish!</p>
+  }
 }
 @if (getRoles().includes("Default")) {
   <form [formGroup]="form" (ngSubmit)="createWish()">

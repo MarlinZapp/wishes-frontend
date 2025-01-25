@@ -11,18 +11,12 @@ import {
   ReactiveFormsModule,
   Validators,
 } from "@angular/forms";
-import {
-  MatDialog,
-  MatDialogActions,
-  MatDialogClose,
-  MatDialogContent,
-  MatDialogRef,
-  MatDialogTitle,
-} from "@angular/material/dialog";
+import { MatDialog } from "@angular/material/dialog";
 import { OkDialogComponent } from "../dialogs/ok-dialog/ok-dialog.component";
 import { Router } from "@angular/router";
 import { AuthService } from "../services/auth.service";
 import { RecordId } from "../interfaces/response";
+import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 
 @Component({
   selector: "app-my-wishes",
@@ -34,11 +28,14 @@ import { RecordId } from "../interfaces/response";
     MatFormField,
     MatLabel,
     ReactiveFormsModule,
+    MatProgressSpinnerModule,
   ],
   templateUrl: "./my-wishes.component.html",
   styleUrl: "./my-wishes.component.scss",
 })
 export class MyWishesComponent {
+  waitingForWishes = true;
+
   wishes: Wish[] = [];
   form = new FormGroup<WishForm>({
     wish: new FormControl<string>("", {
@@ -57,6 +54,7 @@ export class MyWishesComponent {
       .getWishes(this.getRoles().includes("Admin"))
       .then((wishes) => {
         this.wishes = wishes;
+        this.waitingForWishes = false;
       });
   }
 
